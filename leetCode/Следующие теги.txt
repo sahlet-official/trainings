@@ -1,0 +1,27 @@
+нужны теги для задачь на темы:
+
+рекурсия
+полный перебор
+поиск (перебор с возвратом)
+эвристические алгоритмы
+жадные алгоритмы
+разделяй и властвуй
+динамическое прогарммирование
+ветви и границы
+
+Recursion
+Backtracking
+Bit Manipulation
+Greedy
+Sorting
+
+
+Binary Search
+Divide and Conquer
+Dynamic Programming
+Matrix
+Memoization
+
+Graph
+Depth-First Search
+Breadth-First Search (BFS)
