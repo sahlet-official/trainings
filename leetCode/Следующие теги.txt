@@ -14,9 +14,9 @@ Backtracking
 Bit Manipulation
 Greedy
 Sorting
-
-
 Binary Search
+
+
 Divide and Conquer
 Dynamic Programming
 Matrix
