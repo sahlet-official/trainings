@@ -3,10 +3,22 @@
 
 using namespace std;
 
-
 void solve()
 {
+    int n = 0;
+    cin >> n;
 
+    int res = 0;
+
+    long long i = 5;
+
+    while (n >= i)
+    {
+        res += n / i;
+        i *= 5;
+    }
+
+    cout << res;
 }
 
 int main()
@@ -16,14 +28,7 @@ int main()
     std::ios::sync_with_stdio(false);
     std::cin.tie(0);
 
-    long long testsNumber = 1;
-
-    // cin >> testsNumber;
-
-    for (int i = 0; i < testsNumber; i++)
-    {
-        solve();
-    }
+    solve();
 
     return 0;
 }
