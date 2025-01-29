@@ -2,63 +2,12 @@
 #include <bits/stdc++.h>
 
 using namespace std;
-
-std::deque<pair<char, char>> res;
-
-vector<char> letters = {};
-vector<int> lettersCount = {};
-string s;
-
-void solve(int left) {
-    if (!left)
-    {
-        cout << s << endl;
-        return;
-    }
-
-    for(int i = 0; i < lettersCount.size(); i++)
-    {
-        if (lettersCount[i])
-        {
-            lettersCount[i]--;
-            s[s.size() - left] = letters[i];
-            solve(left - 1);
-            lettersCount[i]++;
-        }
-    }
-}
  
 void solve() {
+    string s;
     cin >> s;
 
     sort(s.begin(), s.end());
-
-    int uniq = 1;
-
-    for (int i = 1; i < s.size(); i++)
-    {
-        if (s[i] != s[i - 1])
-        {
-            uniq++;
-        }
-    }
-
-    int index = 0;
-    letters = vector<char>(uniq);
-    lettersCount = vector<int>(uniq);
-    letters[index] = s[0];
-    lettersCount[index] = 1;
-
-    for (int i = 1; i < s.size(); i++)
-    {
-        if (s[i] != s[i - 1])
-        {
-            index++;
-            letters[index] = s[i];
-        }
-
-        lettersCount[index]++;
-    }
 
     int count = 1;
 
@@ -67,17 +16,30 @@ void solve() {
         count *= i;
     }
 
-    for (size_t i = 0; i < lettersCount.size(); i++)
+    int divider = 1;
+
+    for (size_t i = 1; i < s.size(); i++)
     {
-        for (size_t j = 2; j <= lettersCount[i]; j++)
+        if (s[i] == s[i-1])
         {
-            count /= j;
+            divider++;
+            count /= divider;
+        }
+        else
+        {
+            divider = 1;
         }
     }
 
     cout << count << endl;
 
-    solve(s.size());
+    cout << s << endl;
+
+    while (next_permutation(s.begin(), s.end()))
+    {
+        cout << s << endl;
+    }
+    
 }
 
 
