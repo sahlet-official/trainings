@@ -2,7 +2,7 @@
 
 using namespace std;
 
-long long MOD = 1e9 + 7;
+const long long MOD = 1e9 + 7;
 
 inline long long modMult(long long a, long long b)
 {
@@ -46,3 +46,53 @@ inline long long modDivide(long long a, long long b)
 
     return modMult(a, modInverse(b));
 }
+
+// -----------------------------------------------
+
+
+class UnionFind {
+    vector<int> rank, parent;
+
+public:
+    UnionFind(int n) {
+        rank.resize(n, 0);
+        parent.resize(n);
+
+        iota(parent.begin(), parent.end(), 0);
+    }
+
+    int find(int x) {
+        if (parent[x] != x) {
+            parent[x] = find(parent[x]);
+        }
+        return parent[x];
+    }
+
+    bool connect(int x, int y) {
+        int xRoot = find(x);
+        int yRoot = find(y);
+
+        if (xRoot == yRoot) {
+            return false;
+        }
+
+        // Union by rank
+        if (rank[xRoot] < rank[yRoot]) {
+            parent[xRoot] = yRoot;
+        }
+        else if (rank[yRoot] < rank[xRoot]) {
+            parent[yRoot] = xRoot;
+        }
+        else {
+            parent[yRoot] = xRoot;
+            rank[xRoot]++;
+        }
+
+        return true;
+    }
+
+    bool connected(int x, int y)
+    {
+        return find(x) == find(y);
+    }
+};
