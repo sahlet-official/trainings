@@ -4,6 +4,9 @@
         "iostream": "cpp",
         "bitset": "cpp",
         "set": "cpp",
-        "format": "cpp"
+        "format": "cpp",
+        "ostream": "cpp",
+        "initializer_list": "cpp",
+        "valarray": "cpp"
     }
 }

@@ -47,7 +47,7 @@ void solve2() {
     cin >> n >> x;
 
     memory[0] = 0;
-    
+
     fill(memory + 1, memory + x + 1, INT_MAX);
 
     for (int i = 0; i < n; i++)
@@ -87,8 +87,8 @@ int main()
 {
     // freopen("input.txt", "r", stdin);
     // freopen("output.txt", "w", stdout);
-    // std::ios::sync_with_stdio(false);
-    ios_base::sync_with_stdio(false);
+    std::ios::sync_with_stdio(false);
+    // ios_base::sync_with_stdio(false);
     std::cin.tie(0);
 
     long long testsNumber = 1;
