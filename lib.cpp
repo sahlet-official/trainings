@@ -50,6 +50,7 @@ inline long long modDivide(long long a, long long b)
 // -----------------------------------------------
 // Range queries
 
+// search for sum in range
 template<typename SumT = long long>
 class BinaryIndexedTree
 {
@@ -77,7 +78,6 @@ class BinaryIndexedTree
     }
 
 public:
-    
     template<typename RandomAccessIterator>
     BinaryIndexedTree(const RandomAccessIterator& begin, const RandomAccessIterator& end)
     {
@@ -120,6 +120,75 @@ public:
             tree[index] += val;
             index += index & (-index);
         }
+    }
+};
+
+// search for best in range
+template<typename ValT = int, class CompareT = std::less<ValT>>
+class StaticRangeBetterQueries
+{
+    CompareT compare;
+
+    std::vector<ValT> sourceData;
+    std::vector<std::vector<size_t>> memory;
+
+    size_t betterIndex(size_t l, size_t r) const
+    {
+        return compare(sourceData[l], sourceData[r]) ? l : r;
+    }
+
+public:
+    StaticRangeBetterQueries(std::vector<ValT>&& data, CompareT&& cmp = std::less<ValT>()) : compare(cmp), sourceData(data)
+    {
+        const size_t n = data.size();
+        size_t memoryRowsNumber = (size_t)std::log2(n);
+
+        if (memoryRowsNumber < 1)
+        {
+            return;
+        }
+        
+        memory.resize(memoryRowsNumber);
+
+        size_t rangeSize = 2;
+            
+        memory[0].resize(n - (rangeSize - 1));
+
+        for (size_t j = 0; j < memory[0].size(); j++)
+        {
+            memory[0][j] = betterIndex(j, j + 1);
+        }
+
+        for (size_t i = 1; i < memoryRowsNumber; i++)
+        {
+            rangeSize *= 2;
+            
+            memory[i].resize(n - (rangeSize - 1));
+
+            for (size_t j = 0; j < memory[i].size(); j++)
+            {
+                memory[i][j] = betterIndex(memory[i - 1][j], memory[i - 1][j + rangeSize / 2]);
+            }
+        }
+    }
+
+    const ValT& getBestInRange(size_t l, size_t r) const
+    {
+        if (l > r)
+        {
+            throw std::invalid_argument("l > r");
+        }
+
+        size_t rangeLength = r - l + 1;
+        if (rangeLength == 1)
+        {
+            return sourceData[l];
+        }
+
+        size_t memoryRow = (size_t)std::log2(rangeLength) - 1;
+        size_t queryRangeSize = 1 << (memoryRow + 1);
+
+        return sourceData[betterIndex(memory[memoryRow][l], memory[memoryRow][r + 1 - queryRangeSize])];
     }
 };
 
