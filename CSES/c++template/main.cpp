@@ -14,7 +14,9 @@ int main()
     // freopen("input.txt", "r", stdin);
     // freopen("output.txt", "w", stdout);
     std::ios::sync_with_stdio(false);
+    // ios_base::sync_with_stdio(false);
     std::cin.tie(0);
+    // std::cout.tie(0);
 
     long long testsNumber = 1;
 

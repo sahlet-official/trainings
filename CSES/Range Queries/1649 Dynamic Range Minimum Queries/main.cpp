@@ -211,12 +211,105 @@ void solve() {
     }
 }
 
+
+const int maxN = 2e5;
+const int SIZE = 2*2*maxN;
+const int INF = INT_MAX;
+int tree[SIZE];
+int leftIndex[SIZE], rightIndex[SIZE];
+
+int n = 0, q = 0;
+
+void pull(int node)
+{
+    tree[node] = min(tree[2*node], tree[2*node + 1]);
+}
+
+void init(int node, int l, int r)
+{
+    leftIndex[node] = l;
+    rightIndex[node] = r;
+
+    if (l == r)
+    {
+        //scanf("%d", &tree[node]);
+        cin >> tree[node];
+        return;
+    }
+
+    int mid = l + (r - l) / 2;
+
+    init(2*node, l, mid);
+    init(2*node + 1, mid + 1, r);
+    pull(node);
+}
+
+void update(int node, int index, int val)
+{
+    if (leftIndex[node] > index || rightIndex[node] < index)
+    {
+        return;
+    }
+
+    if (leftIndex[node] == rightIndex[node])
+    {
+        tree[node] = val;
+    }
+    else
+    {
+        update(2*node, index, val);
+        update(2*node + 1, index, val);
+        pull(node);
+    }
+}
+
+int getMinOnRange(int node, int l, int r)
+{
+    if (leftIndex[node] > r || rightIndex[node] < l)
+    {
+        return INF;
+    }
+
+    if (l <= leftIndex[node] && r >= rightIndex[node])
+    {
+        return tree[node];
+    }
+
+    return min(getMinOnRange(2*node, l, r), getMinOnRange(2*node + 1, l, r));
+}
+
+void solve2() {
+    cin >> n >> q;
+    //scanf("%d %d", &n, &q);
+
+    init(1, 1, n);
+    
+    for (int i = 0; i < q; i++)
+    {
+        int t = 0, a = 0, b = 0;
+        cin >> t >> a >> b;
+        //scanf("%d %d %d", &t, &a, &b);
+
+        if (t == 1)
+        {
+            update(1, a, b);
+        }
+        else if (t == 2)
+        {
+            printf("%d\n", getMinOnRange(1, a, b));
+            //cout << getMinOnRange(1, a, b) << endl;
+        }
+    }
+}
+
 int main()
 {
     // freopen("input.txt", "r", stdin);
     // freopen("output.txt", "w", stdout);
-    std::ios::sync_with_stdio(false);
+    // std::ios::sync_with_stdio(false);
+    ios_base::sync_with_stdio(false);
     std::cin.tie(0);
+    std::cout.tie(0);
 
     long long testsNumber = 1;
 
@@ -224,7 +317,7 @@ int main()
 
     for (int i = 0; i < testsNumber; i++)
     {
-        solve();
+        solve2();
     }
 
     return 0;
