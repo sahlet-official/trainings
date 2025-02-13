@@ -4,6 +4,7 @@
 using namespace std;
 
 // search for best in range
+// Segment Tree
 template<typename ValT = int, class CompareT = std::less<ValT>>
 class DynamicRangeBetterQueries
 {
@@ -113,22 +114,17 @@ public:
 
         size_t betterIndexOnRange = INF;
 
-        size_t lOne = INF;
-        size_t rOne = INF;
-
         if (l % 2 == 1)
         {
-            lOne = l;
+            betterIndexOnRange = betterIndex(betterIndexOnRange, l);
             l++;
         }
 
         if (r % 2 == 0)
         {
-            rOne = r;
+            betterIndexOnRange = betterIndex(betterIndexOnRange, r);
             r--;
         }
-
-        betterIndexOnRange = betterIndex(lOne, rOne);
 
         l += tree.size();
         r += tree.size();
@@ -140,17 +136,15 @@ public:
 
             if (l % 2 == 1)
             {
-                lOne = tree[l];
+                betterIndexOnRange = betterIndex(betterIndexOnRange, tree[l]);
                 l++;
             }
     
             if (r % 2 == 0)
             {
-                rOne = tree[r];
+                betterIndexOnRange = betterIndex(betterIndexOnRange, tree[r]);
                 r--;
             }
-
-            betterIndexOnRange = betterIndex(betterIndex(lOne, rOne), betterIndexOnRange);
         }
 
         return sourceData[betterIndexOnRange];
