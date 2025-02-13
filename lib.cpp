@@ -64,14 +64,14 @@ class BinaryIndexedTree
 
         std::vector<SumT> prefixSum;
         prefixSum.reserve(n + 1);
-        prefixSum.push_back(0);
+        prefixSum.emplace_back(0);
 
-        for (int i = 0; i < n; i++)
+        for (size_t i = 0; i < n; i++)
         {
-            prefixSum.push_back(prefixSum.back() + *(begin + i));
+            prefixSum.emplace_back(prefixSum.back() + *(begin + i));
         }
 
-        for (int i = 1; i <= n; i++)
+        for (size_t i = 1; i <= n; i++)
         {
             tree[i] = prefixSum[i] - prefixSum[i - (i&-i)];
         }
