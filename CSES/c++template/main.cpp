@@ -21,6 +21,7 @@ int main()
     long long testsNumber = 1;
 
     // cin >> testsNumber;
+    // scanf("%lld", &testsNumber);
 
     for (int i = 0; i < testsNumber; i++)
     {
