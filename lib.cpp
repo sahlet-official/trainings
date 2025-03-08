@@ -232,7 +232,7 @@ class DynamicRangeBetterQueries
     }
 
 public:
-    DynamicRangeBetterQueries(std::vector<ValT>&& data, CompareT&& cmp = std::less<ValT>()) : sourceData(data), compare(cmp)
+    DynamicRangeBetterQueries(std::vector<ValT>&& data, CompareT&& cmp = CompareT()) : sourceData(data), compare(cmp)
     {
         size_t n = sourceData.size();
 
