@@ -1,0 +1,10 @@
+{
+    "files.associations": {
+        "istream": "cpp",
+        "iostream": "cpp",
+        "bitset": "cpp",
+        "set": "cpp",
+        "format": "cpp",
+        "cmath": "cpp"
+    }
+}
