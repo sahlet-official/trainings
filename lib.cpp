@@ -473,6 +473,25 @@ public:
             tree[k] = func(tree[2*k], tree[2*k + 1]);
         }
     }
+
+    size_t findIndex(std::function<bool /*go to left*/ (const ValT& l, const ValT& r)> goToLeftPredicate)
+    {
+        int node = 1;
+
+        while (node < tree.size() / 2)
+        {
+            if (goToLeftPredicate(tree[2*node], tree[2*node + 1]))
+            {
+                node = 2*node;
+            }
+            else
+            {
+                node = 2*node + 1;
+            }
+        }
+        
+        return node - tree.size() / 2;
+    }
 };
 
 
