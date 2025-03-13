@@ -3,9 +3,13 @@
 
 using namespace std;
 
-
-void solve()
+namespace solve1
 {
+
+    void solve()
+    {
+
+    }
 
 }
 
@@ -25,7 +29,7 @@ int main()
 
     for (int i = 0; i < testsNumber; i++)
     {
-        solve();
+        solve1::solve();
     }
 
     return 0;
