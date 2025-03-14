@@ -27,7 +27,7 @@ int main()
     // cin >> testsNumber;
     // scanf("%lld", &testsNumber);
 
-    for (int i = 0; i < testsNumber; i++)
+    for (long long i = 0; i < testsNumber; i++)
     {
         solve1::solve();
     }
