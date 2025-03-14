@@ -8,8 +8,8 @@ namespace solve1
     const int maxN = 2e5;
     long long sumTree[4*maxN];
     struct LazyData {
-        long long assign = 0;
-        long long increase = 0;
+        int k = 0;
+        long long h = 0;
     } lazyPropagation[4*maxN];
     int N, Q, lowerIndex[4*maxN], higherIndex[4*maxN], indexToNode[maxN + 1];
 
@@ -18,40 +18,27 @@ namespace solve1
         sumTree[node] = sumTree[2*node] + sumTree[2*node + 1];
     }
 
-    void assign(int node, long long val)
+    void increase(int node, long long h, int k)
     {
-        lazyPropagation[node].assign = val;
-        lazyPropagation[node].increase = 0;
-        sumTree[node] = (higherIndex[node] - lowerIndex[node] + 1) * val;
-    }
-
-    void increase(int node, long long val)
-    {
-        if (lazyPropagation[node].assign)
-        {
-            lazyPropagation[node].assign += val;
-            sumTree[node] = (higherIndex[node] - lowerIndex[node] + 1) * lazyPropagation[node].assign;
-        }
-        else
-        {
-            lazyPropagation[node].increase += val;
-            sumTree[node] += (higherIndex[node] - lowerIndex[node] + 1) * val;
-        }
+        lazyPropagation[node].h += h;
+        lazyPropagation[node].k += k;
+        int n = higherIndex[node] - lowerIndex[node] + 1;
+        long long stairsSum = (long long)n * (n + 1) / 2 * k;
+        long long platform = h * n;
+        sumTree[node] += platform + stairsSum;
     }
 
     void push(int node)
     {
-        if (lazyPropagation[node].assign)
+        int k = lazyPropagation[node].k;
+        if (k)
         {
-            assign(2*node, lazyPropagation[node].assign);
-            assign(2*node + 1, lazyPropagation[node].assign);
-            lazyPropagation[node].assign = 0;
-        }
-        else if (lazyPropagation[node].increase)
-        {
-            increase(2*node, lazyPropagation[node].increase);
-            increase(2*node + 1, lazyPropagation[node].increase);
-            lazyPropagation[node].increase = 0;
+            long long h = lazyPropagation[node].h;
+            long long rh = h + k*(lowerIndex[2*node + 1] - lowerIndex[node]);
+            increase(2*node, h, k);
+            increase(2*node + 1, rh, k);
+            lazyPropagation[node].h = 0;
+            lazyPropagation[node].k = 0;
         }
     }
 
@@ -95,13 +82,7 @@ namespace solve1
         pull(node);
     }
 
-    enum class Operation : int
-    {
-        Assign,
-        Increase,
-    };
-
-    void update(Operation operation, int l, int r, int val, int node = 1)
+    void update(int l, int r, int node = 1)
     {
         if (r < lowerIndex[node] || l > higherIndex[node])
         {
@@ -110,20 +91,14 @@ namespace solve1
 
         if (l <= lowerIndex[node] && r >= higherIndex[node])
         {
-            if (operation == Operation::Assign)
-            {
-                assign(node, val);
-            }
-            else if (operation == Operation::Increase)
-            {
-                increase(node, val);
-            }
+            int h = lowerIndex[node] - l;
+            increase(node, h, 1);
             return;
         }
 
         push(node);
-        update(operation, l, r, val, 2*node);
-        update(operation, l, r, val, 2*node + 1);
+        update(l, r, 2*node);
+        update(l, r, 2*node + 1);
         pull(node);
     }
 
@@ -159,17 +134,9 @@ namespace solve1
 
             if (t == 1)
             {
-                int x = 0;
-                scanf("%d", &x);
-                update(Operation::Increase, a, b, x);
+                update(a, b);
             }
             else if (t == 2)
-            {
-                int x = 0;
-                scanf("%d", &x);
-                update(Operation::Assign, a, b, x);
-            }
-            else if (t == 3)
             {
                 long long res = querySum(a, b);
                 printf("%lld\n", res);
