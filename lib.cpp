@@ -498,6 +498,47 @@ public:
 // -----------------------------------------------
 // Graphs
 
+// Ranked UnionFind (DSU - Disjoint Set Union)
+class UnionFind {
+    vector<int> info;
+
+public:
+    UnionFind(int n) {
+        info.resize(n, -1);
+    }
+
+    int find(int x) {
+        if (info[x] < 0) return x;
+        info[x] = find(info[x]);
+        return info[x];
+    }
+
+    bool connect(int x, int y) {
+        x = find(x);
+        y = find(y);
+
+        if (x == y) {
+            return false;
+        }
+
+        // Union by rank
+        if (info[x] < info[y]) {
+            swap(x, y);
+        }
+
+        info[x] = y;
+        info[y]--;
+
+        return true;
+    }
+
+    bool connected(int x, int y)
+    {
+        return find(x) == find(y);
+    }
+};
+
+// more detailed then previous (uses more memory)
 class UnionFind {
     vector<int> rank, parent;
 
