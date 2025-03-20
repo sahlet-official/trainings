@@ -1,3 +1,4 @@
-Book - https://cses.fi/book/book.pdf
+# List of solved problems from [CSES problem set](https://cses.fi/problemset/)
+Link to the [problem set]
 
-Problem set - https://cses.fi/problemset/
+## The list of solutions:
