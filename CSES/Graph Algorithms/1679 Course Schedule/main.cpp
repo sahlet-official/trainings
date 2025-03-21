@@ -3,7 +3,7 @@
 
 using namespace std;
 
-namespace solve1
+namespace solve1 // topological order of oriented graph, DFS
 {
     const int maxN = 1e5;
     const int maxM = 2e5;
@@ -86,6 +86,80 @@ namespace solve1
     }
 }
 
+namespace solve2 // topological order of oriented graph, Kahn's algorithm
+{
+    const int maxN = 1e5;
+    const int maxM = 2e5;
+    char vis[maxN + 1];
+    vector<int> neighbors[maxN + 1];
+    int N, M;
+    int order[maxN + 1];
+    int res[maxN + 1];
+    int inEdgesCount[maxN + 1];
+    int firstFreePlace = 1;
+    bool impossible = false;
+
+    void solve()
+    {
+        scanf("%d%d", &N, &M);
+
+        for (int i = 1; i <= M; i++)
+        {
+            int a = 0, b = 0;
+            scanf("%d%d", &a, &b);
+            neighbors[a].push_back(b);
+            inEdgesCount[b]++;
+        }
+
+        queue<int> q;
+
+        for (int i = 1; i <= N; i++)
+        {
+            if (inEdgesCount[i] == 0)
+            {
+                q.push(i);
+            }
+        }
+
+        while(!q.empty())
+        {
+            int node = q.front(); q.pop();
+
+            order[node] = firstFreePlace;
+            firstFreePlace++;
+
+            for (int neighbor : neighbors[node])
+            {
+                inEdgesCount[neighbor]--;
+
+                if (inEdgesCount[neighbor] == 0)
+                {
+                    q.push(neighbor);
+                }
+            }
+        }
+
+        impossible = firstFreePlace <= N;
+
+        if (impossible)
+        {
+            printf("IMPOSSIBLE");
+            return;
+        }
+
+        for (int i = 1; i <= N; i++)
+        {
+            res[order[i]] = i;
+        }
+
+        for (int i = 1; i <= N; i++)
+        {
+            printf("%d ", res[i]);
+        }
+    }
+}
+
+
 int main()
 {
     // freopen("input.txt", "r", stdin);
@@ -102,7 +176,8 @@ int main()
 
     for (long long i = 0; i < testsNumber; i++)
     {
-        solve1::solve();
+        //solve1::solve();
+        solve2::solve();
     }
 
     return 0;
