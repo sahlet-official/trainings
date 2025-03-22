@@ -176,8 +176,8 @@ int main()
 
     for (long long i = 0; i < testsNumber; i++)
     {
-        //solve1::solve();
-        solve2::solve();
+        solve1::solve();
+        //solve2::solve();
     }
 
     return 0;
