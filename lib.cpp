@@ -141,6 +141,12 @@ public:
     StaticRangeBetterQueries(std::vector<ValT>&& data, CompareT&& cmp = std::less<ValT>()) : compare(cmp), sourceData(data)
     {
         const size_t n = data.size();
+
+        if (n == 0)
+        {
+            return;
+        }
+
         size_t memoryRowsNumber = (size_t)std::log2(n);
 
         if (memoryRowsNumber < 1)
