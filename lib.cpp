@@ -591,3 +591,152 @@ public:
         return find(x) == find(y);
     }
 };
+
+// -----------------------------------------------
+// Trees
+
+// Link/Cut Tree (LCT)
+
+namespace LinkCutTree {
+    struct Lazy {
+        int a = 1, b = 0;
+        bool empty(){ return (a == 1 && b == 0); }
+    };
+    
+    struct Node {
+        Lazy tag;
+        Node* children[2] = {nullptr, nullptr};
+        Node* parent = nullptr;
+        bool reversed = false;
+        int size, value, sum, minValue, maxValue, id;
+        static int idcounter;
+
+        Node(int val) : id(++idcounter) {
+            size = 1;
+            value = sum = minValue = maxValue = val;
+        }
+        
+        void apply(Lazy other) {
+            minValue = minValue * other.a + other.b;
+            maxValue = maxValue * other.a + other.b;
+            value = value * other.a + other.b;
+            sum = sum * other.a + size * other.b;
+            tag = {tag.a * other.a, tag.b * other.a + other.b};
+        }
+
+        void push() {
+            if (reversed) {
+                swap(children[0], children[1]);
+                if (children[0]) children[0]->reversed ^= true;
+                if (children[1]) children[1]->reversed ^= true;
+                reversed = false;
+            }
+            if (!tag.empty()) {
+                if (children[0]) children[0]->apply(tag);
+                if (children[1]) children[1]->apply(tag);
+                tag = Lazy();
+            }
+        }
+
+        void pull() {
+            sum = minValue = maxValue = value;
+            size = 1;
+            for (int i = 0; i < 2; i++) {
+                if (children[i]) {
+                    minValue = min(minValue, children[i]->minValue);
+                    maxValue = max(maxValue, children[i]->maxValue);
+                    sum += children[i]->sum;
+                    size += children[i]->size;
+                }
+            }
+        }
+
+        bool isRoot() {
+            return !parent || (parent->children[0] != this && parent->children[1] != this);
+        }
+    };
+    int Node::idcounter = 0;
+
+    void rotate(Node *x) {
+        Node *p = x->parent, *g = p->parent;
+        bool isLeftChild = (p->children[0] == x);
+
+        p->children[isLeftChild ? 0 : 1] = x->children[!isLeftChild];
+        if (x->children[!isLeftChild])  
+            x->children[!isLeftChild]->parent = p;
+    
+        x->children[!isLeftChild] = p;
+        p->parent = x;
+    
+        x->parent = g;
+        if (g && !p->isRoot())  
+            g->children[g->children[1] == p] = x;
+    
+        p->pull();
+        x->pull();
+    }
+
+    void splay(Node *x) {
+        while (!x->isRoot()) {
+            Node *p = x->parent, *g = p->parent;
+            if (!p->isRoot()) g->push();
+            p->push();
+            x->push();
+            if (!p->isRoot()) {
+                bool zigZig = (g->children[0] == p) == (p->children[0] == x);
+                rotate(zigZig ? p : x);
+            }
+            rotate(x);
+        }
+        x->push();
+        x->pull();
+    }
+
+    Node* access(Node *x) {
+        Node *last = nullptr;
+        for (Node *y = x; y; y = y->parent) {
+            splay(y);
+            y->children[1] = last;
+            y->pull();
+            last = y;
+        }
+        splay(x);
+        return last;
+    }
+
+    void evert(Node *x) {
+        access(x);
+        x->reversed ^= true;
+    }
+
+    void link(Node *x, Node *y) {
+        evert(x);
+        x->parent = y;
+    }
+
+    void cut(Node *x, Node *y) {
+        evert(x);
+        access(y);
+        if (y->children[0]) y->children[0]->parent = nullptr;
+        y->children[0] = nullptr;
+        y->pull();
+    }
+
+    Node* path(Node *x, Node *y) {
+        evert(x);
+        access(y);
+        return y;
+    }
+
+    Node* LCA(Node *x, Node *y) {
+        access(x);
+        return access(y);
+    }
+
+    bool connected(Node *x, Node *y) {
+        path(x, y);
+        while (y->children[0])
+            y = y->children[0];
+        return x == y;
+    }
+}
