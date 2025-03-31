@@ -611,9 +611,8 @@ namespace LinkCutTree {
         int size, value, sum, minValue, maxValue, id;
         static int idcounter;
 
-        Node(int val) : id(++idcounter) {
-            size = 1;
-            value = sum = minValue = maxValue = val;
+        Node(int val = 0) : id(++idcounter) {
+            set(val);
         }
         
         void apply(Lazy other) {
@@ -622,6 +621,11 @@ namespace LinkCutTree {
             value = value * other.a + other.b;
             sum = sum * other.a + size * other.b;
             tag = {tag.a * other.a, tag.b * other.a + other.b};
+        }
+
+        void set(int val) {
+            value = val;
+            pull();
         }
 
         void push() {
@@ -660,17 +664,20 @@ namespace LinkCutTree {
     void rotate(Node *x) {
         Node *p = x->parent, *g = p->parent;
         bool isLeftChild = (p->children[0] == x);
+        bool pWasRoot = p->isRoot();
 
-        p->children[isLeftChild ? 0 : 1] = x->children[!isLeftChild];
-        if (x->children[!isLeftChild])  
-            x->children[!isLeftChild]->parent = p;
+        p->children[!isLeftChild] = x->children[isLeftChild];
+        if (x->children[isLeftChild]) {
+            x->children[isLeftChild]->parent = p;
+        }
     
-        x->children[!isLeftChild] = p;
+        x->children[isLeftChild] = p;
         p->parent = x;
     
         x->parent = g;
-        if (g && !p->isRoot())  
+        if (g && !pWasRoot) {
             g->children[g->children[1] == p] = x;
+        }
     
         p->pull();
         x->pull();
@@ -739,4 +746,5 @@ namespace LinkCutTree {
             y = y->children[0];
         return x == y;
     }
-}
+}    
+

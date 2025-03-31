@@ -5,110 +5,162 @@ using namespace std;
 
 namespace solve1
 {
-    // search for sum in range
-template<typename SumT = long long>
-class BinaryIndexedTree
-{
-    std::vector<SumT> tree;
-
-    template<typename _RandomAccessIterator>
-    void init(const _RandomAccessIterator& begin, const _RandomAccessIterator& end)
-    {
-        size_t n = end - begin;
-        tree.resize(n + 1);
-
-        std::vector<SumT> prefixSum;
-        prefixSum.reserve(n + 1);
-        prefixSum.emplace_back(0);
-
-        for (size_t i = 0; i < n; i++)
-        {
-            prefixSum.emplace_back(prefixSum.back() + *(begin + i));
-        }
-
-        for (size_t i = 1; i <= n; i++)
-        {
-            tree[i] = prefixSum[i] - prefixSum[i - (i&-i)];
-        }
-    }
-
-public:
-    template<typename _RandomAccessIterator>
-    BinaryIndexedTree(const _RandomAccessIterator& begin, const _RandomAccessIterator& end)
-    {
-        init(begin, end);
-    }
-
-    template<typename ValT>
-    BinaryIndexedTree(const ValT* begin, const ValT* end)
-    {
-        init(begin, end);
-    }
-
-    BinaryIndexedTree()
-    {
-    }
-
-    SumT getRangeSum(size_t l, size_t r)
-    {
-        SumT sum = 0;
     
-        r += 1;
-    
-        while (r)
-        {   
-            sum += tree[r];
-            r -= r & (-r);
-        }
-    
-        while (l)
-        {   
-            sum -= tree[l];
-            l -= l & (-l);
-        }
-        return sum;
-    }
+    namespace LinkCutTree {
+        struct Lazy {
+            int a = 1, b = 0;
+            bool empty(){ return (a == 1 && b == 0); }
+        };
+        
+        struct Node {
+            Lazy tag;
+            Node* children[2] = {nullptr, nullptr};
+            Node* parent = nullptr;
+            bool reversed = false;
+            int size, value, sum, minValue, maxValue, id;
+            static int idcounter;
 
-    template<typename ValT>
-    void add(size_t index, ValT val)
-    {
-        index = index + 1;
-    
-        while (index < tree.size())
-        {
-            tree[index] += val;
-            index += index & (-index);
-        }
-    }
-};
+            Node(int val = 0) : id(++idcounter) {
+                set(val);
+            }
+            
+            void apply(Lazy other) {
+                minValue = minValue * other.a + other.b;
+                maxValue = maxValue * other.a + other.b;
+                value = value * other.a + other.b;
+                sum = sum * other.a + size * other.b;
+                tag = {tag.a * other.a, tag.b * other.a + other.b};
+            }
 
+            void set(int val) {
+                value = val;
+                pull();
+            }
+
+            void push() {
+                if (reversed) {
+                    swap(children[0], children[1]);
+                    if (children[0]) children[0]->reversed ^= true;
+                    if (children[1]) children[1]->reversed ^= true;
+                    reversed = false;
+                }
+                if (!tag.empty()) {
+                    if (children[0]) children[0]->apply(tag);
+                    if (children[1]) children[1]->apply(tag);
+                    tag = Lazy();
+                }
+            }
+
+            void pull() {
+                sum = minValue = maxValue = value;
+                size = 1;
+                for (int i = 0; i < 2; i++) {
+                    if (children[i]) {
+                        minValue = min(minValue, children[i]->minValue);
+                        maxValue = max(maxValue, children[i]->maxValue);
+                        sum += children[i]->sum;
+                        size += children[i]->size;
+                    }
+                }
+            }
+
+            bool isRoot() {
+                return !parent || (parent->children[0] != this && parent->children[1] != this);
+            }
+        };
+        int Node::idcounter = 0;
+
+        void rotate(Node *x) {
+            Node *p = x->parent, *g = p->parent;
+            bool isLeftChild = (p->children[0] == x);
+            bool pWasRoot = p->isRoot();
+
+            p->children[!isLeftChild] = x->children[isLeftChild];
+            if (x->children[isLeftChild]) {
+                x->children[isLeftChild]->parent = p;
+            }
+        
+            x->children[isLeftChild] = p;
+            p->parent = x;
+        
+            x->parent = g;
+            if (g && !pWasRoot) {
+                g->children[g->children[1] == p] = x;
+            }
+        
+            p->pull();
+            x->pull();
+        }
+
+        void splay(Node *x) {
+            while (!x->isRoot()) {
+                Node *p = x->parent, *g = p->parent;
+                if (!p->isRoot()) g->push();
+                p->push();
+                x->push();
+                if (!p->isRoot()) {
+                    bool zigZig = (g->children[0] == p) == (p->children[0] == x);
+                    rotate(zigZig ? p : x);
+                }
+                rotate(x);
+            }
+            x->push();
+            x->pull();
+        }
+
+        Node* access(Node *x) {
+            Node *last = nullptr;
+            for (Node *y = x; y; y = y->parent) {
+                splay(y);
+                y->children[1] = last;
+                y->pull();
+                last = y;
+            }
+            splay(x);
+            return last;
+        }
+
+        void evert(Node *x) {
+            access(x);
+            x->reversed ^= true;
+        }
+
+        void link(Node *x, Node *y) {
+            evert(x);
+            x->parent = y;
+        }
+
+        void cut(Node *x, Node *y) {
+            evert(x);
+            access(y);
+            if (y->children[0]) y->children[0]->parent = nullptr;
+            y->children[0] = nullptr;
+            y->pull();
+        }
+
+        Node* path(Node *x, Node *y) {
+            evert(x);
+            access(y);
+            return y;
+        }
+
+        Node* LCA(Node *x, Node *y) {
+            access(x);
+            return access(y);
+        }
+
+        bool connected(Node *x, Node *y) {
+            path(x, y);
+            while (y->children[0])
+                y = y->children[0];
+            return x == y;
+        }
+    }    
 
     const int maxN = 2e5;
-    vector<int> neighbors[maxN + 1];
-    int dfsTraversal[maxN + 1];
-    int subtreeSize[maxN + 1];
-    int vals[maxN + 1];
-    long long pathSums[maxN + 1];
-    long long sumsDFSOrder[maxN + 1];
-    long long sumsDifs[maxN + 1];
-    BinaryIndexedTree<long long> BIT;
-    int N, Q;
+    LinkCutTree::Node LCT[maxN + 1];
 
-    int order = 1;
-    void dfs(int node = 1, int parent = 1)
-    {
-        pathSums[node] = vals[node] + pathSums[parent];
-        dfsTraversal[node] = order;
-        order++;
-        subtreeSize[node] = 1;
-        for (int neighbor : neighbors[node])
-        {
-            if (neighbor != parent) {
-                dfs(neighbor, node);
-                subtreeSize[node] += subtreeSize[neighbor];
-            }
-        }
-    }
+    int N, Q;
 
     void solve()
     {
@@ -119,7 +171,7 @@ public:
             int val = 0;
             scanf("%d", &val);
 
-            vals[i] = val;
+            LCT[i].set(val);
         }
 
         for (int i = 2; i <= N; i++)
@@ -127,26 +179,8 @@ public:
             int a = 0, b = 0;
             scanf("%d%d", &a, &b);
 
-            neighbors[a].push_back(b);
-            neighbors[b].push_back(a);
+            link(&LCT[a], &LCT[b]);
         }
-
-        dfs();
-
-        for (int i = 1; i <= N; i++)
-        {
-            sumsDFSOrder[dfsTraversal[i]] = pathSums[i];
-        }
-
-        long long prevSum = 0, curSum = 0;
-        for (int i = 1; i <= N; i++)
-        {
-            prevSum = curSum;
-            curSum = sumsDFSOrder[i];
-            sumsDifs[i] = curSum - prevSum;
-        }
-
-        BIT = BinaryIndexedTree(sumsDifs, sumsDifs + N + 1);
 
         for (int i = 1; i <= Q; i++)
         {
@@ -157,19 +191,18 @@ public:
             {
                 int node = 0, val = 0;
                 scanf("%d%d", &node, &val);
-                
-                int oldVal = vals[node];
-                vals[node] = val;
 
-                BIT.add(dfsTraversal[node], val - oldVal);
-                BIT.add(dfsTraversal[node] + subtreeSize[node], oldVal - val);
+                LinkCutTree::access(&LCT[node]);
+                LCT[node].set(val);
             }
             else if (t == 2)
             {
-                int node = 0;
-                scanf("%d", &node);
+                int node1 = 0, node2 = 0;
+                scanf("%d%d", &node1, &node2);
+
+                auto path = LinkCutTree::path(&LCT[node1], &LCT[node2]);
                 
-                printf("%lld\n", BIT.getRangeSum(1, dfsTraversal[node]));
+                printf("%d\n", path->maxValue);
             }
         }
     }
@@ -191,8 +224,7 @@ int main()
 
     for (long long i = 0; i < testsNumber; i++)
     {
-        solve1::solve();
-        //solve2::solve();
+        solve1::solve(); 
     }
 
     return 0;
