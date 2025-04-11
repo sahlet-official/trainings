@@ -144,26 +144,26 @@ Solutions are written in C++ by Oleksandr Kryvonosov.
 1. [Polynomial Queries](./Range%20Queries/1736%20Polynomial%20Queries/main.cpp)
 1. [Range Queries and Copies](./Range%20Queries/1737%20Range%20Queries%20and%20Copies/main.cpp)
 
-<!-- ## Tree Algorithms
+## Tree Algorithms
 
-1. [Subordinates](./Tree%20Algorithms/%20Subordinates/main.cpp)
-1. [Tree Matching](./Tree%20Algorithms/%20Tree%20Matching/main.cpp)
-1. [Tree Diameter](./Tree%20Algorithms/%20Tree%20Diameter/main.cpp)
-1. [Tree Distances I](./Tree%20Algorithms/%20Tree%20Distances%20I/main.cpp)
-1. [Tree Distances II](./Tree%20Algorithms/%20Tree%20Distances%20II/main.cpp)
-1. [Company Queries I](./Tree%20Algorithms/%20Company%20Queries%20I/main.cpp)
-1. [Company Queries II](./Tree%20Algorithms/%20Company%20Queries%20II/main.cpp)
-1. [Distance Queries](./Tree%20Algorithms/%20Distance%20Queries/main.cpp)
-1. [Counting Paths](./Tree%20Algorithms/%20Counting%20Paths/main.cpp)
-1. [Subtree Queries](./Tree%20Algorithms/%20Subtree%20Queries/main.cpp)
-1. [Path Queries](./Tree%20Algorithms/%20Path%20Queries%20I/main.cpp)
-1. [Path Queries II](./Tree%20Algorithms/%20Path%20Queries%20II/main.cpp)
-1. [Distinct Colors](./Tree%20Algorithms/%20Distinct%20Colors/main.cpp)
-1. [Finding a Centroid](./Tree%20Algorithms/%20Finding%20a%20Centroid/main.cpp)
-1. [Fixed-Length Paths I](./Tree%20Algorithms/%20Fixed%20Length%20Paths%20I/main.cpp)
-1. [Fixed-Length Paths II](./Tree%20Algorithms/%20Fixed%20Length%20Paths%20II/main.cpp)
+1. [Subordinates](./Tree%20Algorithms/1674%20Subordinates/main.cpp)
+1. [Tree Matching](./Tree%20Algorithms/1130%20Tree%20Matching/main.cpp)
+1. [Tree Diameter](./Tree%20Algorithms/1131%20Tree%20Diameter/main.cpp)
+1. [Tree Distances I](./Tree%20Algorithms/1132%20Tree%20Distances%20I/main.cpp)
+1. [Tree Distances II](./Tree%20Algorithms/1133%20Tree%20Distances%20II/main.cpp)
+1. [Company Queries I](./Tree%20Algorithms/1687%20Company%20Queries%20I/main.cpp)
+1. [Company Queries II](./Tree%20Algorithms/1688%20Company%20Queries%20II/main.cpp)
+1. [Distance Queries](./Tree%20Algorithms/1135%20Distance%20Queries/main.cpp)
+1. [Counting Paths](./Tree%20Algorithms/1136%20Counting%20Paths/main.cpp)
+1. [Subtree Queries](./Tree%20Algorithms/1137%20Subtree%20Queries/main.cpp)
+1. [Path Queries](./Tree%20Algorithms/1138%20Path%20Queries/main.cpp)
+1. [Path Queries II](./Tree%20Algorithms/2134%20Path%20Queries%20II/main.cpp)
+1. [Distinct Colors](./Tree%20Algorithms/1139%20Distinct%20Colors/main.cpp)
+1. [Finding a Centroid](./Tree%20Algorithms/2079%20Finding%20a%20Centroid/main.cpp)
+1. [Fixed-Length Paths I](./Tree%20Algorithms/2080%20Fixed-Length%20Paths%20I/main.cpp)
+1. [Fixed-Length Paths II](./Tree%20Algorithms/2081%20Fixed-Length%20Paths%20II/main.cpp)
 
-## Mathematics
+<!-- ## Mathematics
 
 1. [Josephus Queries](./Mathematics/Josephus%20Queries/main.cpp)
 1. [Exponentiation](./Mathematics/Exponentiation%20I/main.cpp)
