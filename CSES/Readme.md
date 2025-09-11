@@ -6,8 +6,8 @@ Solutions are written in C++ by Oleksandr Kryvonosov.
 ## Introductory Problems
 1. [Weird Algorithm](./Introductory%20Problems/1068%20Weird%20Algorithm/main.cpp)
 1. [Missing Number](./Introductory%20Problems/1083%20Missing%20Number/main.cpp)
-1. Repetitions
-1. Increasing Array
+1. [Repetitions](./Introductory%20Problems/1069%20Repetitions/main.cpp)
+1. [Increasing Array](./Introductory%20Problems/1094%20Increasing%20Array/main.cpp)
 1. [Permutations](./Introductory%20Problems/1070%20Permutations/main.cpp)
 1. [Number Spiral](./Introductory%20Problems/1071%20Number%20Spiral/main.cpp)
 1. [Two Knights](./Introductory%20Problems/1072%20Two%20Knights/main.cpp)
@@ -15,13 +15,18 @@ Solutions are written in C++ by Oleksandr Kryvonosov.
 1. [Bit Strings](./Introductory%20Problems/1617%20Bit%20Strings/main.cpp)
 1. [Trailing Zeros](./Introductory%20Problems/1618%20Trailing%20Zeros/main.cpp)
 1. [Coin Piles](./Introductory%20Problems/1754%20Coin%20Piles/main.cpp)
-1. Palindrome Reorder
+1. [Palindrome Reorder](./Introductory%20Problems/1755%20Palindrome%20Reorder/main.cpp)
 1. [Gray Code](./Introductory%20Problems/2205%20Gray%20Code/main.cpp)
 1. [Tower of Hanoi](./Introductory%20Problems/2165%20Tower%20of%20Hanoi/main.cpp)
 1. [Creating Strings](./Introductory%20Problems/1622%20Creating%20Strings/main.cpp)
 1. [Apple Division](./Introductory%20Problems/1623%20Apple%20Division/main.cpp)
 1. [Chessboard and Queens](./Introductory%20Problems/1624%20Chessboard%20and%20Queens/main.cpp)
+1. [Raab Game I](./Introductory%20Problems/3399%20Raab%20Game%20I/main.cpp)
+1. [Mex Grid Construction](./Introductory%20Problems/3419%20Mex%20Grid%20Construction/main.cpp)
+1. [Knight Moves Grid](./Introductory%20Problems/3217%20Knight%20Moves%20Grid/main.cpp)
+1. [Grid Coloring I](./Introductory%20Problems/3311%20Grid%20Coloring%20I/main.cpp)
 1. [Digit Queries](./Introductory%20Problems/2431%20Digit%20Queries/main.cpp)
+1. [String Reorder](./Introductory%20Problems/1743%20String%20Reorder/main.cpp)
 1. [Grid Paths](./Introductory%20Problems/1625%20Grid%20Paths/main.cpp)
 
 ## Sorting and Searching
