@@ -45,6 +45,8 @@ Solutions are written in C++ by Oleksandr Kryvonosov.
 1. [Playlist](./Sorting%20and%20Searching/1141%20Playlist/main.cpp)
 1. [Towers](./Sorting%20and%20Searching/1073%20Towers/main.cpp)
 1. [Traffic Lights](./Sorting%20and%20Searching/1163%20Traffic%20Lights/main.cpp)
+1. [Distinct Values Subarrays](./Sorting%20and%20Searching/3420%20Distinct%20Values%20Subarrays/main.cpp)
+1. [Distinct Values Subsequences](./Sorting%20and%20Searching/3421%20Distinct%20Values%20Subsequences/main.cpp)
 1. [Josephus Problem I](./Sorting%20and%20Searching/2162%20Josephus%20Problem%20I/main.cpp)
 1. [Josephus Problem II](./Sorting%20and%20Searching/2163%20Josephus%20Problem%20II/main.cpp)
 1. [Nested Ranges Check](./Sorting%20and%20Searching/2168%20Nested%20Ranges%20Check/main.cpp)
@@ -59,10 +61,8 @@ Solutions are written in C++ by Oleksandr Kryvonosov.
 1. [Subarray Sums I](./Sorting%20and%20Searching/1660%20Subarray%20Sums%20I/main.cpp)
 1. [Subarray Sums II](./Sorting%20and%20Searching/1661%20Subarray%20Sums%20II/main.cpp)
 1. [Subarray Divisibility](./Sorting%20and%20Searching/1662%20Subarray%20Divisibility/main.cpp)
-1. [Subarray Distinct Values](./Sorting%20and%20Searching/2428%20Subarray%20Distinct%20Values/main.cpp)
+1. [Distinct Values Subarrays II](./Sorting%20and%20Searching/2428%20Distinct%20Values%20Subarrays%20II/main.cpp)
 1. [Array Division](./Sorting%20and%20Searching/1085%20Array%20Division/main.cpp)
-1. [Sliding Window Median](./Sorting%20and%20Searching/1076%20Sliding%20Window%20Median/main.cpp)
-1. [Sliding Window Cost](./Sorting%20and%20Searching/1077%20Sliding%20Window%20Cost/main.cpp)
 1. [Movie Festival II](./Sorting%20and%20Searching/1632%20Movie%20Festival%20II/main.cpp)
 1. [Maximum Subarray Sum II](./Sorting%20and%20Searching/1644%20Maximum%20Subarray%20Sum%20II/main.cpp)
 
@@ -260,7 +260,13 @@ Solutions are written in C++ by Oleksandr Kryvonosov.
 1. [Task Assignment](./Advanced%20Techniques/Task%20Assignment/main.cpp)
 1. [Distinct Routes II](./Advanced%20Techniques/Distinct%20Routes%20II/main.cpp)
 
-## Additional Problems
+-->
+
+## Sliding Window Problems
+1. [Sliding Window Median](./Sliding%20Window%20Problems/1076%20Sliding%20Window%20Median/main.cpp)
+1. [Sliding Window Cost](./Sliding%20Window%20Problems/1077%20Sliding%20Window%20Cost/main.cpp)
+
+<!-- ## Additional Problems
 
 1. [Shortest Subsequence](./Additional%20Problems/Shortest%20Subsequence/main.cpp)
 1. [Counting Bits](./Additional%20Problems/Counting%20Bits/main.cpp)
