@@ -532,8 +532,12 @@ public:
             swap(x, y);
         }
 
+        bool rankIsSame = info[x] == info[y];
+
         info[x] = y;
-        info[y]--;
+        if (rankIsSame) {
+            info[y]--;
+        }
 
         return true;
     }

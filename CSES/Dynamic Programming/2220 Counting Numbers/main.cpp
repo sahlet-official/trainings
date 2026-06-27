@@ -3,13 +3,6 @@
 
 using namespace std;
 
-const long long MOD = 1e9 + 7;
-
-inline long long modSum(long long a, long long b)
-{
-    return ((a % MOD) + (b % MOD) + MOD) % MOD;
-}
-
 const long long maxA = 1e18;
 
 long long a = 0, b = 0;
@@ -121,6 +114,74 @@ void solve2()
     );
 }
 
+namespace Solver3 {
+    auto pow9 = [](unsigned int p) -> long long {
+        long long res = 1;
+
+        for (int i = 1; i <= p; i++)
+        {
+            res *= 9;
+        }
+
+        return res;
+    };
+
+    long long recursionFunction(int notAllowedFirstDigit, const std::string& number, int pos) {
+        if (pos >= number.length()) {
+            throw std::bad_function_call();
+        }
+
+        int firstDigit = number[pos] - '0';
+
+        // this is count of result numbers that has length (number.length() - pos)
+        // and starts with digit less then firstDigit and not equals to notAllowedFirstDigit
+        auto fullRests = [&]() {
+            int countOfDigitsLessOrEqualToFirst = firstDigit + (1 /* this is 0 digit */);
+
+            int numberOfFullRests = countOfDigitsLessOrEqualToFirst - (1 /*this is firstDigit*/) - (notAllowedFirstDigit < firstDigit ? 1 : 0);
+
+            return numberOfFullRests * pow9((int)number.length() - pos - 1);
+        };
+
+        auto res = fullRests();
+
+        if (firstDigit != notAllowedFirstDigit) {
+            if ((pos + 1) == number.length()) {
+                res += 1;
+            } else {
+                res += recursionFunction(firstDigit, number, pos + 1);
+            }
+        }
+
+        return res;
+    }
+
+    long long countOfNumbersWithNoTwoSameAdjacentDigits(long long number) {
+        auto strNumber = to_string(number);
+
+        long long res = 0;
+
+        for (int i = 0; i < strNumber.length(); i++) {
+            res += pow9(i);
+        }
+
+        res += recursionFunction(0, strNumber, 0);
+
+        return res;
+    }
+
+    void solve() {
+        scanf("%lld%lld", &a, &b);
+
+        long long rightRangeBorderRes = countOfNumbersWithNoTwoSameAdjacentDigits(b);
+        long long leftRangeBorderRes = (a ? countOfNumbersWithNoTwoSameAdjacentDigits(a - 1) : 0);
+
+        auto rangeRes = rightRangeBorderRes - leftRangeBorderRes;
+
+        printf("%lld", rangeRes);
+    }
+}
+
 int main()
 {
     // freopen("input.txt", "r", stdin);
@@ -136,7 +197,8 @@ int main()
     for (int i = 0; i < testsNumber; i++)
     {
         //solve1();
-        solve2();
+        //solve2();
+        Solver3::solve();
     }
 
     return 0;
